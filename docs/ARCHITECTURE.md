@@ -2,15 +2,21 @@
 
 Chessy is a local pipeline from screen pixels to a UCI move suggestion.
 
-```
-┌───────────────┐     ┌──────────────────┐     ┌──────────────┐     ┌───────────────────────┐
-│ Screen capture│ ──▶│   VisionPipeline  │──▶ │ FEN + checks │ ──▶│     Engine backend    │
-│ (mss / region)│     │  ResNet squares  │     │ tracker/legal│     │ SF / Reckless / Maia  │
-└───────────────┘     └──────────────────┘     └──────────────┘     └───────────────────────┘
-                                                                             │
-                                                                             ▼
-                                                                      Qt overlay /
-                                                                       CLI / API
+```mermaid
+flowchart TD
+  CAP["Screen capture<br/>(mss / region)"] --> VP[VisionPipeline]
+
+  subgraph Model["Vision model pipeline"]
+    direction LR
+    DET["detect / crop"] --> SEG["segment 8×8"]
+    SEG --> CLS["PieceClassifier<br/>ResNet18"]
+    CLS --> BUILD[build_fen]
+  end
+
+  VP --> Model
+  Model --> CHECK["FEN + checks<br/>tracker / legal"]
+  CHECK --> ENG["Engine backend<br/>SF / Reckless / Maia"]
+  ENG --> OUT["Qt overlay / CLI / API"]
 ```
 
 ## Overlay path
