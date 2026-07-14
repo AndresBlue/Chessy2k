@@ -4,23 +4,6 @@
 
 Local desktop chess assistant: capture a digital board screenshot, recover FEN with a vision model, and get a move suggestion from **Stockfish**, **Reckless**, or **Maia-3**.
 
-```mermaid
-flowchart TD
-  CAP["Screen capture<br/>(mss / region)"] --> VP[VisionPipeline]
-
-  subgraph Model["Vision model pipeline"]
-    direction LR
-    DET["detect / crop"] --> SEG["segment 8×8"]
-    SEG --> CLS["PieceClassifier<br/>ResNet18"]
-    CLS --> BUILD[build_fen]
-  end
-
-  VP --> Model
-  Model --> CHECK["FEN + checks<br/>tracker / legal"]
-  CHECK --> ENG["Engine backend<br/>SF / Reckless / Maia"]
-  ENG --> OUT["Qt overlay / CLI / API"]
-```
-
 No cloud dependency for the core loop. Engines and the vision checkpoint ship inside the repository (Maia-3 weights are cached locally on first setup).
 
 ## Features
@@ -39,6 +22,27 @@ No cloud dependency for the core loop. Engines and the vision checkpoint ship in
 - Python 3.10+ (3.10 recommended for Torch CUDA builds)
 - Windows x86-64 with AVX2 for the bundled engine binaries (Linux/macOS: place matching binaries under `engines/`)
 - Optional: NVIDIA GPU for faster vision / Maia-3 inference
+
+## Pipeline
+
+Chessy runs fully locally: a screen region is captured, the vision model crops and classifies each square with ResNet18 to recover a FEN, quality checks gate illegal or low-confidence boards, then the selected UCI engine (Stockfish, Reckless, or Maia-3) returns a move for the Qt overlay, CLI, or API.
+
+```mermaid
+flowchart TD
+  CAP["Screen capture<br/>(mss / region)"] --> VP[VisionPipeline]
+
+  subgraph Model["Vision model pipeline"]
+    direction LR
+    DET["detect / crop"] --> SEG["segment 8×8"]
+    SEG --> CLS["PieceClassifier<br/>ResNet18"]
+    CLS --> BUILD[build_fen]
+  end
+
+  VP --> Model
+  Model --> CHECK["FEN + checks<br/>tracker / legal"]
+  CHECK --> ENG["Engine backend<br/>SF / Reckless / Maia"]
+  ENG --> OUT["Qt overlay / CLI / API"]
+```
 
 ## Quick start
 
