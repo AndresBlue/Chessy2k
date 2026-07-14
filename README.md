@@ -1,3 +1,5 @@
+[English](/README.md) / [Español](/docs/i18n/README_es.md)
+
 # Chessy
 
 Local desktop chess assistant: capture a digital board screenshot, recover FEN with a vision model, and get a move suggestion from **Stockfish**, **Reckless**, or **Maia-3**.
