@@ -1,0 +1,2 @@
+engines/**/*.exe filter=lfs diff=lfs merge=lfs -text
+data/checkpoints/vision/best.pt filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,55 @@
+﻿__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.env
+.venv/
+venv/
+
+# Model weights (keep the shipped vision checkpoint)
+*.pt
+*.onnx
+!data/checkpoints/vision/best.pt
+
+# Large / regenerable local caches
+data/lichess/
+data/processed/
+data/synthetic_screenshots/
+data/notebook_runs/
+data/raw_pgn/
+data/selfplay_games/
+data/teacher_labels/
+data/fen_positions/
+data/maia3/cache/
+!data/maia3/cache/.gitkeep
+data/logs/
+!data/logs/.gitkeep
+data/openings/*.bin
+!data/openings/README.md
+logs/
+results/
+/checkpoints/
+
+# Local overlay state (user-specific)
+data/overlay_settings.json
+data/overlay_region.json
+
+# Images except test fixtures
+*.png
+!tests/fixtures/*.png
+!assets/**
+
+# Editor / OS junk
+.DS_Store
+Thumbs.db
+*.log
+tmp_*.txt
+_*.txt
+_tmp_*/
+.pytest_tmp/

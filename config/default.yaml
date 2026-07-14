@@ -1,0 +1,80 @@
+# Chessy default configuration (repo-relative paths only)
+
+vision:
+  board_size: 512
+  square_size: 64
+  architecture: resnet18
+  ambiguity_threshold: 0.65
+  checkpoint: data/checkpoints/vision/best.pt
+  repair_fen: false
+  incremental: true
+  preprocess_squares: false
+  min_mean_confidence: 0.5
+  max_ambiguous_squares: 20
+
+engines:
+  stockfish:
+    path: ./engines/stockfish/stockfish-windows-x86-64-avx2.exe
+    threads: 12
+    hash_mb: 1024
+    depth: 15
+    multipv: 5
+    skill_level: 20
+  reckless:
+    path: ./engines/reckless/reckless-windows-avx2.exe
+    threads: 12
+    hash_mb: 1024
+    multipv: 5
+    move_overhead_ms: 100
+  maia3:
+    enabled: true
+    model: maia3-23m
+    cache_dir: data/maia3/cache
+    use_uci_history: true
+    temperature: 0
+    top_p: 1.0
+    multipv: 5
+    default_elo: 1500
+    # Prefer CUDA + AMP when available; clients fall back to CPU automatically.
+    device: cuda
+    use_amp: true
+    uci_timeout_s: 180
+    local_files_only: false
+    timing:
+      enabled: true
+      min_seconds: 2
+      max_seconds: 75
+      elo_scale: true
+      criticality_10_point: true
+
+tracker:
+  infer_castling: true
+  infer_en_passant: false
+  max_search_ply: 4
+  transition_max_nodes: 5000
+  transition_max_seconds: 0.4
+
+humanization:
+  enabled: true
+  target_elo: 2000
+  opening:
+    max_fullmove: 12
+    movetime_ms: 120
+    min_pieces: 24
+    use_book: true
+    book_path: data/openings/performance.bin
+    book_temperature: 0.3
+  timing:
+    probe_movetime_ms: 200
+    normal_movetime_ms: 3500
+    critical_movetime_ms: 9500
+    critical_cp_gap: 25
+  selection:
+    multipv: 5
+    practical_move_chance: 0.15
+    practical_cp_slack_1900: 45
+    practical_cp_slack_2100: 25
+    inaccuracy_chance_floor: 0.35
+    inaccuracy_chance_ceiling: 0.06
+    blunder_chance_floor: 0.08
+    blunder_cp_min: 120

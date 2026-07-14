@@ -1,0 +1,23 @@
+# Third-party notices
+
+Chessy (MIT) bundles or invokes the following independently licensed components:
+
+## Stockfish
+
+- Location: `engines/stockfish/`
+- License: GNU General Public License v3.0
+- Upstream: https://stockfishchess.org / https://github.com/official-stockfish/Stockfish
+
+## Reckless
+
+- Location: `engines/reckless/`
+- License: GNU Affero General Public License v3.0
+- Upstream: https://github.com/codedeliveryservice/Reckless
+
+## Maia-3
+
+- Location: `third_party/maia3/` (when vendored) and weights under `data/maia3/cache/`
+- Upstream: https://github.com/CSSLab/maia3
+- Follow the upstream license and attribution requirements for that package.
+
+Chessy launches these engines as separate processes over the UCI protocol and does not statically link their code into the Python application.
