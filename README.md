@@ -4,8 +4,21 @@
 
 Local desktop chess assistant: capture a digital board screenshot, recover FEN with a vision model, and get a move suggestion from **Stockfish**, **Reckless**, or **Maia-3**.
 
-```
-Screenshot → board crop → 64-square classifier → FEN → UCI engine → suggested move + think time
+```mermaid
+flowchart TD
+  CAP["Screen capture<br/>(mss / region)"] --> VP[VisionPipeline]
+
+  subgraph Model["Vision model pipeline"]
+    direction LR
+    DET["detect / crop"] --> SEG["segment 8×8"]
+    SEG --> CLS["PieceClassifier<br/>ResNet18"]
+    CLS --> BUILD[build_fen]
+  end
+
+  VP --> Model
+  Model --> CHECK["FEN + checks<br/>tracker / legal"]
+  CHECK --> ENG["Engine backend<br/>SF / Reckless / Maia"]
+  ENG --> OUT["Qt overlay / CLI / API"]
 ```
 
 No cloud dependency for the core loop. Engines and the vision checkpoint ship inside the repository (Maia-3 weights are cached locally on first setup).
